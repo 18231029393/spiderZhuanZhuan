@@ -17,15 +17,14 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Service
 @EnableScheduling
 public class spiderService {
     private static final Logger logger = LoggerFactory.getLogger(spiderService.class);
+    public static final String[] key = {"荣耀20","荣耀30","V20","V30","nova5Pro","nova68","Mate20Pro","Mate20X","P30","nova7"};
+
     @Autowired
     RedisUtil redisUtil;
 
@@ -84,10 +83,9 @@ public class spiderService {
                 zhuanPojoList = jsonArray.toJavaList(ZhuanZhuanPojo.class);
 
                 for (int i = 0; i < zhuanPojoList.size(); i++) {
-                    if (zhuanPojoList.get(i).getTitle().contains("荣耀20 ") ||zhuanPojoList.get(i).getTitle().contains("荣耀 30 ") ||zhuanPojoList.get(i).getTitle().contains("V20 ") ||zhuanPojoList.get(i).getTitle().contains("V30 ")|| zhuanPojoList.get(i).getTitle().contains("nova 5 Pro") || zhuanPojoList.get(i).getTitle().contains("nova 6 8") || zhuanPojoList.get(i).getTitle().contains("Mate 20 Pro") || zhuanPojoList.get(i).getTitle().contains("Mate 20 X") || zhuanPojoList.get(i).getTitle().contains("P30") || zhuanPojoList.get(i).getTitle().contains("nova 7")) {
-                        if (zhuanPojoList.get(i).getSalePrice()<2000&&!zhuanPojoList.get(i).getTitle().contains("8新以下")) {
-//                        if (!zhuanPojoList.get(i).getTitle().contains("8新以下")) {
-//                        if (zhuanPojoList.get(i).getSalePrice()<2000) {
+//                    if (zhuanPojoList.get(i).getTitle().contains("荣耀20 ") ||zhuanPojoList.get(i).getTitle().contains("荣耀 30 ") ||zhuanPojoList.get(i).getTitle().contains("V20 ") ||zhuanPojoList.get(i).getTitle().contains("V30 ")|| zhuanPojoList.get(i).getTitle().contains("nova 5 Pro") || zhuanPojoList.get(i).getTitle().contains("nova 6 8") || zhuanPojoList.get(i).getTitle().contains("Mate 20 Pro") || zhuanPojoList.get(i).getTitle().contains("Mate 20 X") || zhuanPojoList.get(i).getTitle().contains("P30") || zhuanPojoList.get(i).getTitle().contains("nova 7")) {
+                        if (Arrays.stream(key).anyMatch(zhuanPojoList.get(i).getTitle().replaceAll(" ","")::contains)){
+                        if (zhuanPojoList.get(i).getSalePrice()<2000&&!zhuanPojoList.get(i).getTitle().contains("8新")) {
                             if (zhuanPojoList.get(i).getOriginPrice() != 0) {
                                 salePriceList.add(zhuanPojoList.get(i));
                             }
